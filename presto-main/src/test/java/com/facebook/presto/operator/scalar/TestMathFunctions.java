@@ -521,7 +521,7 @@ public class TestMathFunctions
     }
 
     @Test
-    public void testWidthBucket()
+    public void testWidthBucketBinCount()
     {
         assertFunction("width_bucket(3.14, 0, 4, 3)", BIGINT, 3);
         assertFunction("width_bucket(2, 0, 4, 3)", BIGINT, 2);
@@ -546,16 +546,22 @@ public class TestMathFunctions
     }
 
     @Test(expectedExceptions = PrestoException.class, expectedExceptionsMessageRegExp = "Bucket for value Infinity is out of range")
-    public void testWidthBucketOverflowAscending()
+    public void testWidthBucketBinCountOverflowAscending()
             throws Exception
     {
         functionAssertions.tryEvaluate("width_bucket(infinity(), 0, 4, " + Long.MAX_VALUE + ")", DOUBLE);
     }
 
     @Test(expectedExceptions = PrestoException.class, expectedExceptionsMessageRegExp = "Bucket for value Infinity is out of range")
-    public void testWidthBucketOverflowDescending()
+    public void testWidthBucketBinCountOverflowDescending()
             throws Exception
     {
         functionAssertions.tryEvaluate("width_bucket(infinity(), 4, 0, " + Long.MAX_VALUE + ")", DOUBLE);
+    }
+
+    @Test
+    public void testWidthBucketArray()
+    {
+        assertFunction("width_bucket(3.14, array[0.0, 1.0, 2.0, 3.0, 4.0])", BIGINT, 4);
     }
 }
